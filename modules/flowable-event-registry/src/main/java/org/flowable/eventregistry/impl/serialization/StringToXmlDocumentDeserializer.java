@@ -18,6 +18,7 @@ import java.nio.charset.StandardCharsets;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.XMLConstants;
 
 import org.flowable.common.engine.api.FlowableException;
 import org.flowable.eventregistry.api.InboundEventDeserializer;
@@ -32,6 +33,7 @@ public class StringToXmlDocumentDeserializer implements InboundEventDeserializer
     public Document deserialize(String rawEvent) {
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             try (InputStream inputStream = new ByteArrayInputStream(rawEvent.getBytes(StandardCharsets.UTF_8))) {
                 return documentBuilder.parse(inputStream);
